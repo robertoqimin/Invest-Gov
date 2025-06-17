@@ -7,22 +7,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <a href="{{ url_for('home_blueprint.index') }}">Home</a>
-      <a href="#">Sobre Nós</a>
+  {% include 'partials/header.html' %}
 
-      {% if current_user.is_authenticated %}
-        <a href="{{ url_for('home_blueprint.cadastro') }}">Cadastrar Projeto</a>
-        <form action="{{ url_for('auth.logout') }}" method="post" style="display:inline;">
-        <a href="#" onclick="this.closest('form').submit(); return false;">Logout</a>
-        </form>
-      {% else %}
-        <a href="{{ url_for('auth.login_page') }}">Login</a>
-      {% endif %}
-    </nav>
-    <h1>Lobby de Investimentos</h1>
-  </header>
   <h1>Perfil do Usuário</h1>
   <p>Nome: {{ current_user.username }}</p>
   <p>Email: {{ current_user.email }}</p>

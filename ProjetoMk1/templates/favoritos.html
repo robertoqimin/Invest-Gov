@@ -117,28 +117,7 @@
 </head>
 <body>
 
-  <header>
-    <nav class="navbar">
-      <a href="{{ url_for('home_blueprint.index') }}">Home</a>
-      <a href="{{ url_for('home_blueprint.sobrenos') }}">Sobre Nós</a>
-      {% if current_user.is_authenticated %}
-        <a href="{{ url_for('home_blueprint.cadastro') }}">Cadastrar Projeto</a>
-        <div class="dropdown">
-          <a href="#" class="dropbtn">Conta</a>
-          <div class="dropdown-content">
-            <a href="{{ url_for('home_blueprint.perfil') }}">Perfil</a>
-            <a href="{{ url_for('home_blueprint.favoritos') }}">Favoritos</a>
-            <form action="{{ url_for('auth.logout') }}" method="post">
-              <button type="submit">Logout</button>
-            </form>
-          </div>
-        </div>
-      {% else %}
-        <a href="{{ url_for('auth.login_page') }}">Login</a>
-      {% endif %}
-    </nav>
-    <h1>Lobby de Investimentos</h1>
-  </header>
+  {% include 'partials/header.html' %}
 
   {% if current_user.is_authenticated %}
   <section>
