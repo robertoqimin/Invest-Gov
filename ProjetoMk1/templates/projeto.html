@@ -5,29 +5,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lobby de Investimentos</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      cursor: pointer;
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      min-width: 150px;
+      z-index: 1;
+      flex-direction: column;
+    }
+
+    .dropdown-content a,
+    .dropdown-content form {
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+      display: block;
+      border: none;
+      background: none;
+      text-align: left;
+    }
+
+    .dropdown-content a:hover,
+    .dropdown-content form:hover {
+      background-color: #444;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content form button {
+      color: white;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .dropdown-content form button:hover {
+      background-color: #444;
+    }
+  </style>
 </head>
 <body>
+
   <header>
     <nav class="navbar">
       <a href="{{ url_for('home_blueprint.index') }}">Home</a>
-      <a href="#">Sobre Nós</a>
-
+      <a href="{{ url_for('home_blueprint.sobrenos') }}">Sobre Nós</a>
       {% if current_user.is_authenticated %}
         <a href="{{ url_for('home_blueprint.cadastro') }}">Cadastrar Projeto</a>
-        <a href="{{ url_for('home_blueprint.perfil') }}">Perfil</a>
-        <form action="{{ url_for('auth.logout') }}" method="post" style="display:inline;">
-          <a href="#" onclick="this.closest('form').submit(); return false;">Logout</a>
-        </form>
+        <div class="dropdown">
+          <a href="#" class="dropbtn">Conta</a>
+          <div class="dropdown-content">
+            <a href="{{ url_for('home_blueprint.perfil') }}">Perfil</a>
+            <a href="{{ url_for('home_blueprint.favoritos') }}">Favoritos</a>
+            <form action="{{ url_for('auth.logout') }}" method="post">
+              <button type="submit">Logout</button>
+            </form>
+          </div>
+        </div>
       {% else %}
         <a href="{{ url_for('auth.login_page') }}">Login</a>
       {% endif %}
     </nav>
     <h1>Lobby de Investimentos</h1>
   </header>
-  <h1>{{ projeto.title }}</h1>
-  <img src="{{ projeto.location }}" alt="{{ projeto.title }}">
-  <p>{{ projeto.description }}</p>
-  <p>Categoria: {{ projeto.category }}</p>
-  <p>Status: {{ projeto.status }}</p>
+
+  <main class="project-card">
+    <p><strong>Autor:</strong> {{ projeto.owner.username }} ({{ projeto.owner.email }})</p>
+
+    <h2>{{ projeto.title }}</h2>
+    <p class="subtitle">Mary Shelley. Uma villa assombrada. Uma banda punk de Ohio.</p>
+    <img src="{{ projeto.location }}" alt="{{ projeto.title }}" class="project-image">
+
+    <p class="description">{{ projeto.description }}</p>
+    <p><strong>Categoria:</strong> {{ projeto.category }}</p>
+
+    {% if current_user.is_authenticated %}
+      <button id="favorite-btn">Favoritar</button>
+      <p id="message" style="color: green;"></p>
+    {% else %}
+      <p>Faça login para favoritar este projeto.</p>
+    {% endif %}
+  </main>
+
+  {% if current_user.is_authenticated %}
+  <script>
+    document.getElementById('favorite-btn').addEventListener('click', () => {
+      fetch(`/favorites/{{ projeto.id }}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Erro na requisição');
+        return response.json();
+      })
+      .then(data => {
+        document.getElementById('message').innerText = data.message || 'Projeto favoritado!';
+      })
+      .catch(err => {
+        document.getElementById('message').style.color = 'red';
+        document.getElementById('message').innerText = 'Erro ao favoritar.';
+        console.error(err);
+      });
+    });
+  </script>
+  {% endif %}
 </body>
 </html>

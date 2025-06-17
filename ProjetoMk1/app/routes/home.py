@@ -11,14 +11,13 @@ def index():
 def cadastro():
     return render_template('cadastro.html')
 
-@bp.route('/detalhe')
-def detalhe():
-    return render_template('detalhe.html')
-
-@bp.route('/detalhes')
-def detalhes():
-    return render_template('detalhes.html')
-
 @bp.route('/perfil')
 def perfil():
     return render_template('perfil.html')
+@bp.route('/sobrenos')
+def sobrenos():
+    return render_template('sobreNos.html')
+
+@bp.route('/favoritos')
+def favoritos():
+    return render_template('favoritos.html')

@@ -1,172 +1,184 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #111;
-    color: #000000;
-    margin: 0;
-    padding: 0;
-  }
-  
-  header {
-    text-align: center;
-    padding: 1rem;
-    background-color: #222;
-  }
-  
-  .carrossel-container {
-    display: flex;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    gap: 1rem;
-    padding: 1rem;
-    cursor: grab;
-  }
-  
-  .carrossel-container::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .card {
-    min-width: 300px;
-    background-color: #222;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    flex-shrink: 0;
-  }
-  
-  .card:hover {
-    transform: scale(1.05);
-  }
-  
-  .card img {
-    width: 100%;
-    display: block;
-  }
-  
-  .card .descricao {
-    padding: 1rem;
-  }
-  .navbar {
-    display: flex;
-    justify-content: space-around;
-    background-color: #333;
-    padding: 0.5rem;
-  }
-  
-  .navbar a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .navbar a:hover {
-    text-decoration: underline;
-  }
-  
-  #detalhe-container {
-    max-width: 800px;
-    margin: auto;
-    padding: 1rem;
-    text-align: center;
-  }
-  
-  #detalhe-imagem {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  
-  #detalhe-descricao {
-    margin-top: 1rem;
-  }
-  
-  #detalhe-descricao h2 {
-    font-size: 2rem;
-  }
-  
-  #detalhe-descricao p {
-    font-size: 1.2rem;
-    color: #444;
-  }
-  .carrossel {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 1rem;
-    scroll-snap-type: x mandatory;
-  }
-  
-  .card {
-    flex: 0 0 auto;
-    width: 300px;
-    height: 200px;
-    background-color: #f0f0f0;
-    scroll-snap-align: start;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-    position: relative;
-  }
-  
-  .card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .card .descricao {
-    position: absolute;
-    bottom: 0;
-    background: rgba(0,0,0,0.6);
-    color: white;
-    padding: 0.5rem;
-    font-size: 0.9rem;
-    width: 100%;
-  }
-  
-  .card:hover {
-    transform: scale(1.05);
-  }
-  
-  .categoria {
-    margin-bottom: 2rem;
-  }
-  
-  .categoria h2 {
-    margin-left: 1rem;
-    font-size: 1.5rem;
-    color: #333;
-  }
-  #btn-voltar {
-    margin-top: 1.5rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  #btn-voltar:hover {
-    background-color: #555;
-  }
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #000; /* FUNDO PRETO */
-    color: #eee;       /* Letras mais claras para melhor contraste */
-  }
-  .card {
-    width: 300px;
-    height: 250px;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-    cursor: pointer;
-  }
-  
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #000; /* fundo preto */
+  color: #eee;       /* letras claras */
+}
+
+header {
+  text-align: center;
+  padding: 1rem;
+  background-color: #222;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  background-color: #333;
+  padding: 0.5rem;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.categoria {
+  margin-bottom: 2rem;
+}
+
+.categoria h2 {
+  margin-left: 1rem;
+  font-size: 1.5rem;
+  color: #eee;
+}
+
+.carrossel {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.carrossel::-webkit-scrollbar {
+  display: none;
+}
+
+.projeto {
+  flex: 0 0 auto;
+  width: 300px;
+  height: 360px;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.projeto:hover {
+  transform: scale(1.05);
+}
+
+.projeto img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.projeto h3 {
+  font-size: 1.2rem;
+  margin: 0.5rem 0.8rem 0 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.projeto p {
+  font-size: 0.9rem;
+  margin: 0.3rem 0.8rem;
+  color: #ccc;
+  max-height: 3.6em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#btn-voltar {
+  margin-top: 1.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#btn-voltar:hover {
+  background-color: #555;
+}
+
+#detalhe-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+#detalhe-imagem {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+#detalhe-descricao {
+  margin-top: 1rem;
+}
+
+#detalhe-descricao h2 {
+  font-size: 2rem;
+}
+
+#detalhe-descricao p {
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+  z-index: 1;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.dropdown-content a,
+.dropdown-content form button {
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  background: none;
+  border: none;
+  text-align: left;
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dropdown-content a:hover,
+.dropdown-content form button:hover {
+  background-color: #444;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}

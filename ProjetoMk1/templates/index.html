@@ -5,36 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lobby de Investimentos</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      cursor: pointer;
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      min-width: 150px;
+      z-index: 1;
+      flex-direction: column;
+    }
+
+    .dropdown-content a,
+    .dropdown-content form {
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+      display: block;
+      border: none;
+      background: none;
+      text-align: left;
+    }
+
+    .dropdown-content a:hover,
+    .dropdown-content form:hover {
+      background-color: #444;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content form button {
+      color: white;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .dropdown-content form button:hover {
+      background-color: #444;
+    }
+  </style>
 </head>
 <body>
+
   <header>
     <nav class="navbar">
       <a href="{{ url_for('home_blueprint.index') }}">Home</a>
-      <a href="#">Sobre Nós</a>
-
+      <a href="{{ url_for('home_blueprint.sobrenos') }}">Sobre Nós</a>
       {% if current_user.is_authenticated %}
         <a href="{{ url_for('home_blueprint.cadastro') }}">Cadastrar Projeto</a>
-        <a href="{{ url_for('home_blueprint.perfil') }}">Perfil</a>
-        <form action="{{ url_for('auth.logout') }}" method="post" style="display:inline;">
-          <a href="#" onclick="this.closest('form').submit(); return false;">Logout</a>
-        </form>
+        <div class="dropdown">
+          <a href="#" class="dropbtn">Conta</a>
+          <div class="dropdown-content">
+            <a href="{{ url_for('home_blueprint.perfil') }}">Perfil</a>
+            <a href="{{ url_for('home_blueprint.favoritos') }}">Favoritos</a>
+            <form action="{{ url_for('auth.logout') }}" method="post">
+              <button type="submit">Logout</button>
+            </form>
+          </div>
+        </div>
       {% else %}
         <a href="{{ url_for('auth.login_page') }}">Login</a>
       {% endif %}
     </nav>
     <h1>Lobby de Investimentos</h1>
-    </script>
   </header>
 
   <!-- Todos os Projetos -->
   <section class="categoria">
     <h2>Todos os Projetos</h2>
-    <div class="carrossel" id="carrossel-todos">
+    <div class="carrossel">
       {% for projeto in projetos %}
         <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
           <div class="projeto">
+            <img src="{{ projeto.location }}" alt="Imagem do projeto">
             <h3>{{ projeto.title }}</h3>
-            <img src="{{ projeto.location }}" alt="Imagem do projeto" />
             <p>{{ projeto.description }}</p>
             <p><strong>Categoria:</strong> {{ projeto.category }}</p>
           </div>
@@ -46,12 +107,12 @@
   <!-- Tecnologia -->
   <section class="categoria">
     <h2>Tecnologia</h2>
-    <div class="carrossel" id="carrossel-tecnologia">
+    <div class="carrossel">
       {% for projeto in projetos if projeto.category and projeto.category.lower() == 'tecnologia' %}
         <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
           <div class="projeto">
+            <img src="{{ projeto.location }}" alt="Imagem do projeto">
             <h3>{{ projeto.title }}</h3>
-            <img src="{{ projeto.location }}" alt="Imagem do projeto" />
             <p>{{ projeto.description }}</p>
           </div>
         </a>
@@ -62,12 +123,12 @@
   <!-- Energia -->
   <section class="categoria">
     <h2>Energia</h2>
-    <div class="carrossel" id="carrossel-energia">
+    <div class="carrossel">
       {% for projeto in projetos if projeto.category and projeto.category.lower() == 'energia' %}
         <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
           <div class="projeto">
+            <img src="{{ projeto.location }}" alt="Imagem do projeto">
             <h3>{{ projeto.title }}</h3>
-            <img src="{{ projeto.location }}" alt="Imagem do projeto" />
             <p>{{ projeto.description }}</p>
           </div>
         </a>
@@ -78,12 +139,12 @@
   <!-- Saúde -->
   <section class="categoria">
     <h2>Saúde</h2>
-    <div class="carrossel" id="carrossel-saude">
+    <div class="carrossel">
       {% for projeto in projetos if projeto.category and projeto.category.lower() == 'saúde' %}
         <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
           <div class="projeto">
+            <img src="{{ projeto.location }}" alt="Imagem do projeto">
             <h3>{{ projeto.title }}</h3>
-            <img src="{{ projeto.location }}" alt="Imagem do projeto" />
             <p>{{ projeto.description }}</p>
           </div>
         </a>
@@ -92,8 +153,5 @@
   </section>
 
   <script src="{{ url_for('static', filename='carrossel.js') }}"></script>
-  <script src="{{ url_for('static', filename='animacaodocarrossel.js') }}"></script>
-  <script src="{{ url_for('static', filename='intescarrossel.js') }}"></script>
-  <script src="{{ url_for('static', filename='script01.js') }}"></script>
 </body>
 </html>
