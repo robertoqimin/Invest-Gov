@@ -1,12 +1,13 @@
 from flask import Blueprint, render_template
-
+from app.models.project import Project
 bp = Blueprint('home_blueprint', __name__)
 
 @bp.route('/')
 def index():
-    return render_template('index.html')
+    projetos = Project.query.all()
+    return render_template('index.html', projetos=projetos)
 
-@bp.route('/cadastro')
+@bp.route('/cadastrarProjeto')
 def cadastro():
     return render_template('cadastro.html')
 
@@ -17,3 +18,7 @@ def detalhe():
 @bp.route('/detalhes')
 def detalhes():
     return render_template('detalhes.html')
+
+@bp.route('/perfil')
+def perfil():
+    return render_template('perfil.html')

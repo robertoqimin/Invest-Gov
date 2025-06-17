@@ -10,31 +10,86 @@
   <header>
     <nav class="navbar">
       <a href="{{ url_for('home_blueprint.index') }}">Home</a>
-      <a href="#">Login</a>
       <a href="#">Sobre Nós</a>
-      <a href="{{ url_for('home_blueprint.cadastro') }}">Cadastrar</a>
+
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('home_blueprint.cadastro') }}">Cadastrar Projeto</a>
+        <a href="{{ url_for('home_blueprint.perfil') }}">Perfil</a>
+        <form action="{{ url_for('auth.logout') }}" method="post" style="display:inline;">
+          <a href="#" onclick="this.closest('form').submit(); return false;">Logout</a>
+        </form>
+      {% else %}
+        <a href="{{ url_for('auth.login_page') }}">Login</a>
+      {% endif %}
     </nav>
     <h1>Lobby de Investimentos</h1>
+    </script>
   </header>
 
+  <!-- Todos os Projetos -->
+  <section class="categoria">
+    <h2>Todos os Projetos</h2>
+    <div class="carrossel" id="carrossel-todos">
+      {% for projeto in projetos %}
+        <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
+          <div class="projeto">
+            <h3>{{ projeto.title }}</h3>
+            <img src="{{ projeto.location }}" alt="Imagem do projeto" />
+            <p>{{ projeto.description }}</p>
+            <p><strong>Categoria:</strong> {{ projeto.category }}</p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Tecnologia -->
   <section class="categoria">
     <h2>Tecnologia</h2>
-    <div class="carrossel" id="carrossel-tecnologia"></div>
+    <div class="carrossel" id="carrossel-tecnologia">
+      {% for projeto in projetos if projeto.category and projeto.category.lower() == 'tecnologia' %}
+        <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
+          <div class="projeto">
+            <h3>{{ projeto.title }}</h3>
+            <img src="{{ projeto.location }}" alt="Imagem do projeto" />
+            <p>{{ projeto.description }}</p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
   </section>
 
+  <!-- Energia -->
   <section class="categoria">
     <h2>Energia</h2>
-    <div class="carrossel" id="carrossel-energia"></div>
+    <div class="carrossel" id="carrossel-energia">
+      {% for projeto in projetos if projeto.category and projeto.category.lower() == 'energia' %}
+        <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
+          <div class="projeto">
+            <h3>{{ projeto.title }}</h3>
+            <img src="{{ projeto.location }}" alt="Imagem do projeto" />
+            <p>{{ projeto.description }}</p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
   </section>
 
+  <!-- Saúde -->
   <section class="categoria">
     <h2>Saúde</h2>
-    <div class="carrossel" id="carrossel-saude"></div>
+    <div class="carrossel" id="carrossel-saude">
+      {% for projeto in projetos if projeto.category and projeto.category.lower() == 'saúde' %}
+        <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
+          <div class="projeto">
+            <h3>{{ projeto.title }}</h3>
+            <img src="{{ projeto.location }}" alt="Imagem do projeto" />
+            <p>{{ projeto.description }}</p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
   </section>
-
-  <main>
-    <div id="carrossel" class="carrossel-container"></div>
-  </main>
 
   <script src="{{ url_for('static', filename='carrossel.js') }}"></script>
   <script src="{{ url_for('static', filename='animacaodocarrossel.js') }}"></script>

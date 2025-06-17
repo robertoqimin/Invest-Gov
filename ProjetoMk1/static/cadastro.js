@@ -18,7 +18,7 @@ document.getElementById("cadastro-form").addEventListener("submit", function (e)
     localStorage.setItem("investimentos", JSON.stringify(dadosSalvos));
   
     alert("Investimento cadastrado com sucesso!");
-    window.location.href = "index.html";
+    window.location.href = "/";
   });
   
   

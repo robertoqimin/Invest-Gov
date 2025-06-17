@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lobby de Investimentos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a href="{{ url_for('home_blueprint.index') }}">Home</a>
+      <a href="#">Sobre Nós</a>
+
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('home_blueprint.cadastro') }}">Cadastrar Projeto</a>
+        <form action="{{ url_for('auth.logout') }}" method="post" style="display:inline;">
+        <a href="#" onclick="this.closest('form').submit(); return false;">Logout</a>
+        </form>
+      {% else %}
+        <a href="{{ url_for('auth.login_page') }}">Login</a>
+      {% endif %}
+    </nav>
+  </header>
+
+
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Senha" required><br>
+        <button type="submit">Entrar</button>
+    </form>
+    <a href="/register"><button>Cadastrar</button></a>
+    <p id="message" style="color: red;"></p>
+
+    <script>
+        document.getElementById('loginForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+            if (res.ok) {
+                window.location.href = "/"; // Altere para o endpoint correto
+            } else {
+                document.getElementById('message').innerText = result.message;
+            }
+        };
+    </script>
+</body>
+</html>

@@ -19,3 +19,4 @@ def favorite(project_id):
 @login_required
 def list_favorites():
     return jsonify([{ 'id': p.id, 'title': p.title } for p in current_user.favorites])
+

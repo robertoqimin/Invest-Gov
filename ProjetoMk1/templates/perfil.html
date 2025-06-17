@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lobby de Investimentos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a href="{{ url_for('home_blueprint.index') }}">Home</a>
+      <a href="#">Sobre Nós</a>
+
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('home_blueprint.cadastro') }}">Cadastrar Projeto</a>
+        <form action="{{ url_for('auth.logout') }}" method="post" style="display:inline;">
+        <a href="#" onclick="this.closest('form').submit(); return false;">Logout</a>
+        </form>
+      {% else %}
+        <a href="{{ url_for('auth.login_page') }}">Login</a>
+      {% endif %}
+    </nav>
+    <h1>Lobby de Investimentos</h1>
+  </header>
+  <h1>Perfil do Usuário</h1>
+  <p>Nome: {{ current_user.username }}</p>
+  <p>Email: {{ current_user.email }}</p>
+  <p>Data de Criação: {{ current_user.created_at.strftime('%d/%m/%Y') if current_user.created_at else 'N/A' }}</p>
+
+  <h2>Projetos Criados</h2>
+  <ul>
+    {% if current_user.projetos %}
+      {% for projeto in current_user.projetos %}
+        <li>
+          <a href="{{ url_for('projects.edit_project', id=projeto.id) }}">{{ projeto.title }}</a>
+          <!-- Formulário para deletar -->
+          <form action="{{ url_for('projects.delete_project_post', id=projeto.id) }}" method="post" style="display:inline;">
+            <button type="submit" onclick="return confirm('Tem certeza que deseja deletar este projeto?')">Deletar</button>
+          </form>
+        </li>
+      {% endfor %}
+    {% else %}
+      <li>Nenhum projeto cadastrado.</li>
+    {% endif %}
+  </ul>
+</body>
+</html>
