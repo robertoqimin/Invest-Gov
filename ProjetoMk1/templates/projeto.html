@@ -60,6 +60,11 @@
     .dropdown-content form button:hover {
       background-color: #444;
     }
+
+    #comments-list div {
+      border-bottom: 1px solid #ccc;
+      padding: 8px 0;
+    }
   </style>
 </head>
 <body>
@@ -69,7 +74,6 @@
     <p><strong>Autor:</strong> {{ projeto.owner.username }} ({{ projeto.owner.email }})</p>
 
     <h2>{{ projeto.title }}</h2>
-    <p class="subtitle">Mary Shelley. Uma villa assombrada. Uma banda punk de Ohio.</p>
     <img src="{{ projeto.location }}" alt="{{ projeto.title }}" class="project-image">
 
     <p class="description">{{ projeto.description }}</p>
@@ -81,10 +85,30 @@
     {% else %}
       <p>Faça login para favoritar este projeto.</p>
     {% endif %}
+
+    <!-- Seção de comentários visível para todos -->
+    <section id="comments-section">
+      <h3>Comentários</h3>
+
+      <div id="comments-list">
+        <!-- Comentários carregados aqui -->
+      </div>
+
+      {% if current_user.is_authenticated %}
+        <form id="comment-form">
+          <textarea id="comment-content" rows="3" placeholder="Escreva seu comentário..." required></textarea><br/>
+          <button type="submit">Comentar</button>
+        </form>
+        <p id="comment-message" style="color: green;"></p>
+      {% else %}
+        <p>Faça login para comentar.</p>
+      {% endif %}
+    </section>
   </main>
 
   {% if current_user.is_authenticated %}
   <script>
+    // Favoritar projeto
     document.getElementById('favorite-btn').addEventListener('click', () => {
       fetch(`/favorites/{{ projeto.id }}`, {
         method: 'POST',
@@ -107,5 +131,64 @@
     });
   </script>
   {% endif %}
+
+  <script>
+    const commentsList = document.getElementById('comments-list');
+    const commentMessage = document.getElementById('comment-message');
+
+    async function loadComments() {
+      try {
+        const res = await fetch(`/comments/{{ projeto.id }}`);
+        if (!res.ok) throw new Error('Erro ao carregar comentários');
+        const comments = await res.json();
+
+        commentsList.innerHTML = '';
+        if (comments.length === 0) {
+          commentsList.innerHTML = '<p>Nenhum comentário ainda.</p>';
+          return;
+        }
+
+        comments.forEach(c => {
+          const div = document.createElement('div');
+          div.innerHTML = `<strong>${c.username}</strong> <em>em ${c.created_at}</em><br>${c.content}`;
+          commentsList.appendChild(div);
+        });
+      } catch (err) {
+        commentsList.innerHTML = '<p style="color:red;">Erro ao carregar comentários.</p>';
+        console.error(err);
+      }
+    }
+
+    const commentForm = document.getElementById('comment-form');
+    if (commentForm) {
+      commentForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const content = document.getElementById('comment-content').value.trim();
+        if (!content) return;
+
+        try {
+          const response = await fetch(`/comments/{{ projeto.id }}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content })
+          });
+
+          if (!response.ok) throw new Error('Erro ao enviar comentário');
+          const data = await response.json();
+          commentMessage.style.color = 'green';
+          commentMessage.innerText = data.message || 'Comentado com sucesso!';
+          document.getElementById('comment-content').value = '';
+          await loadComments();
+        } catch (err) {
+          commentMessage.style.color = 'red';
+          commentMessage.innerText = 'Erro ao enviar comentário.';
+          console.error(err);
+        }
+      });
+    }
+
+    // Carrega os comentários ao abrir a página
+    loadComments();
+  </script>
 </body>
 </html>

@@ -20,3 +20,4 @@ def get_users():
     if current_user.role != 'admin': return '', 403
     users = User.query.all()
     return jsonify([{ 'id': u.id, 'email': u.email, 'role': u.role } for u in users])
+

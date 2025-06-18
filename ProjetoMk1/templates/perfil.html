@@ -12,7 +12,6 @@
   <h1>Perfil do Usuário</h1>
   <p>Nome: {{ current_user.username }}</p>
   <p>Email: {{ current_user.email }}</p>
-  <p>Data de Criação: {{ current_user.created_at.strftime('%d/%m/%Y') if current_user.created_at else 'N/A' }}</p>
 
   <h2>Projetos Criados</h2>
   <ul>

@@ -20,8 +20,13 @@ def register():
         data = request.get_json()
         if User.query.filter_by(email=data['email']).first():
             return jsonify({'message': 'Email já registrado'}), 400
+
         hashed = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-        user = User(username=data['username'], email=data['email'], password=hashed, role='user')
+
+        # Use o role que vem do frontend, ou 'user' como padrão
+        role = data.get('role', 'user')
+
+        user = User(username=data['username'], email=data['email'], password=hashed, role=role)
         db.session.add(user)
         db.session.commit()
         return jsonify({'message': 'Usuário registrado com sucesso'})

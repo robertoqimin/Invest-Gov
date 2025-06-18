@@ -21,3 +21,11 @@ def sobrenos():
 @bp.route('/favoritos')
 def favoritos():
     return render_template('favoritos.html')
+
+@bp.route('/admintestes')
+def admintestes():
+    return render_template('admin.html')
+
+@bp.route('/admin')
+def admin():
+    return render_template('adminLogin.html')

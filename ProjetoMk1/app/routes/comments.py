@@ -13,3 +13,14 @@ def add_comment(project_id):
     db.session.add(comment)
     db.session.commit()
     return jsonify({'message': 'Comentado'})
+
+@bp.route('/<int:project_id>', methods=['GET'])
+def get_comments(project_id):
+    comments = Comment.query.filter_by(project_id=project_id).order_by(Comment.created_at.desc()).all()
+    result = [{
+        'id': c.id,
+        'content': c.content,
+        'username': c.user.username,
+        'created_at': c.created_at.strftime('%d/%m/%Y %H:%M')
+    } for c in comments]
+    return jsonify(result)

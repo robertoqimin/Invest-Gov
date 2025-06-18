@@ -33,7 +33,7 @@
 
             const result = await res.json();
             if (res.ok) {
-                window.location.href = "/"; // Altere para o endpoint correto
+                window.location.href = "/";
             } else {
                 document.getElementById('message').innerText = result.message;
             }
