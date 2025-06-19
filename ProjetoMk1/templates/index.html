@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lobby de Investimentos</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% include 'partials/head.html' %}
+
+
+
   <style>
     .dropdown {
       position: relative;
@@ -83,53 +80,6 @@
     </div>
   </section>
 
-  <!-- Tecnologia -->
-  <section class="categoria">
-    <h2>Tecnologia</h2>
-    <div class="carrossel">
-      {% for projeto in projetos if projeto.category and projeto.category.lower() == 'tecnologia' %}
-        <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
-          <div class="projeto">
-            <img src="{{ projeto.location }}" alt="Imagem do projeto">
-            <h3>{{ projeto.title }}</h3>
-            <p>{{ projeto.description }}</p>
-          </div>
-        </a>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- Energia -->
-  <section class="categoria">
-    <h2>Energia</h2>
-    <div class="carrossel">
-      {% for projeto in projetos if projeto.category and projeto.category.lower() == 'energia' %}
-        <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
-          <div class="projeto">
-            <img src="{{ projeto.location }}" alt="Imagem do projeto">
-            <h3>{{ projeto.title }}</h3>
-            <p>{{ projeto.description }}</p>
-          </div>
-        </a>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- Saúde -->
-  <section class="categoria">
-    <h2>Saúde</h2>
-    <div class="carrossel">
-      {% for projeto in projetos if projeto.category and projeto.category.lower() == 'saúde' %}
-        <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
-          <div class="projeto">
-            <img src="{{ projeto.location }}" alt="Imagem do projeto">
-            <h3>{{ projeto.title }}</h3>
-            <p>{{ projeto.description }}</p>
-          </div>
-        </a>
-      {% endfor %}
-    </div>
-  </section>
 
   <script src="{{ url_for('static', filename='carrossel.js') }}"></script>
 </body>

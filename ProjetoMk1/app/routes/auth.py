@@ -6,13 +6,16 @@ from flask import Blueprint
 
 bp = Blueprint('auth', __name__)
 
+#rotas GET
 @bp.route('/register', methods=['GET'])
 def register_page():
-    return render_template('cadastroUser.html')
+    return render_template('userCadastro.html')
 
 @bp.route('/login', methods=['GET'])
 def login_page():
-    return render_template('login.html')
+    return render_template('userLogin.html')
+
+
 
 @bp.route('/register', methods=['POST'])
 def register():

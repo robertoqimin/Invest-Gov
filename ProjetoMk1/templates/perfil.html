@@ -1,33 +1,97 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lobby de Investimentos</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{%include 'partials/head.html' %}
+
 <body>
   {% include 'partials/header.html' %}
 
-  <h1>Perfil do Usuário</h1>
-  <p>Nome: {{ current_user.username }}</p>
-  <p>Email: {{ current_user.email }}</p>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: black;
+      margin: 0;
+      padding: 0;
+    }
+    .perfil-container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #222;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 32px 40px;
+    }
+    h1, h2 {
+      color: #fff;
+      margin-top: 0;
+    }
+    p {
+      color: #fff;
+      font-size: 1.1em;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #333;
+      margin-bottom: 12px;
+      padding: 14px 18px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    li:last-child {
+      margin-bottom: 0;
+    }
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      margin-right: 16px;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    form {
+      display: inline;
+      margin: 0;
+    }
+    button {
+      background: #444;
+      color: #fff;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95em;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #c0392b;
+    }
+  </style>
 
-  <h2>Projetos Criados</h2>
-  <ul>
-    {% if current_user.projetos %}
-      {% for projeto in current_user.projetos %}
-        <li>
-          <a href="{{ url_for('projects.edit_project', id=projeto.id) }}">{{ projeto.title }}</a>
-          <!-- Formulário para deletar -->
-          <form action="{{ url_for('projects.delete_project_post', id=projeto.id) }}" method="post" style="display:inline;">
-            <button type="submit" onclick="return confirm('Tem certeza que deseja deletar este projeto?')">Deletar</button>
-          </form>
-        </li>
-      {% endfor %}
-    {% else %}
-      <li>Nenhum projeto cadastrado.</li>
-    {% endif %}
-  </ul>
+  <div class="perfil-container">
+    <h1>Perfil do Usuário</h1>
+    <p>Nome: {{ current_user.username }}</p>
+    <p>Email: {{ current_user.email }}</p>
+
+    <h2>Projetos Criados</h2>
+    <ul>
+      {% if current_user.projetos %}
+        {% for projeto in current_user.projetos %}
+          <li>
+            <span>
+              <a href="{{ url_for('projects.edit_project', id=projeto.id) }}">{{ projeto.title }}</a>
+            </span>
+            <form action="{{ url_for('projects.delete_project_post', id=projeto.id) }}" method="post">
+              <button type="submit" onclick="return confirm('Tem certeza que deseja deletar este projeto?')">Deletar</button>
+            </form>
+          </li>
+        {% endfor %}
+      {% else %}
+        <li>Nenhum projeto cadastrado.</li>
+      {% endif %}
+    </ul>
+  </div>
 </body>
 </html>

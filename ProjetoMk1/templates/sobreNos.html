@@ -1,13 +1,41 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lobby de Investimentos</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% include 'partials/head.html' %}
+
 <body>
   {% include 'partials/header.html' %}
+  <style>
+  .sobre-nos {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #222;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .sobre-nos h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .sobre-nos p {
+    font-size: 1.15rem;
+    color: #fff;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    text-align: justify;
+  }
+  @media (max-width: 600px) {
+    .sobre-nos {
+      padding: 16px;
+    }
+    .sobre-nos h1 {
+      font-size: 2rem;
+    }
+  }
+  </style>
+
   <section class="sobre-nos">
     <h1>Sobre Nós</h1>
     <p>

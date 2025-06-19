@@ -7,9 +7,9 @@ def index():
     projetos = Project.query.all()
     return render_template('index.html', projetos=projetos)
 
-@bp.route('/cadastrarProjeto')
-def cadastro():
-    return render_template('cadastro.html')
+@bp.route('/cadastrarprojeto')
+def cadastrarprojeto():
+    return render_template('cadastroProjeto.html')
 
 @bp.route('/perfil')
 def perfil():
