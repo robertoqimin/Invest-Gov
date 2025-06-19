@@ -9,6 +9,9 @@
           <div class="dropdown-content">
             <a href="{{ url_for('home_blueprint.perfil') }}">Perfil</a>
             <a href="{{ url_for('home_blueprint.favoritos') }}">Favoritos</a>
+            {% if current_user.role == 'admin' %}
+              <a href="{{ url_for('home_blueprint.admin') }}">Admin</a>
+            {% endif %}
             <form action="{{ url_for('auth.logout') }}" method="post">
               <button type="submit">Logout</button>
             </form>

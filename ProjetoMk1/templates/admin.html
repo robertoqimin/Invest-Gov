@@ -1,20 +1,105 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <title>Painel Admin</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h2 { margin-top: 40px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
-    th, td { border: 1px solid #ddd; padding: 8px; }
-    th { background-color: #f2f2f2; }
-  </style>
-</head>
+{% include 'partials/head.html' %}
 <body>
+  {% include 'partials/header.html' %}
   <h1>Painel Admin</h1>
-  <a href="/admin/login"><button>LOGIN</button></a>
-  <a href="/admin/cadastrar"><button>CADASTRAR NOVO ADMIN</button></a>
-  
+
+  <h2>Usuários</h2>
+  <table id="users-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Usuários serão inseridos aqui via JS -->
+    </tbody>
+  </table>
+
+  <h2>Projetos</h2>
+  <table id="projects-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Usuários</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Projetos serão inseridos aqui via JS -->
+    </tbody>
+  </table>
+
+  <script>
+  async function fetchUsers() {
+    const res = await fetch('/admin/users');
+    if (!res.ok) return;
+    const users = await res.json();
+    const tbody = document.querySelector('#users-table tbody');
+    tbody.innerHTML = '';
+    users.forEach(user => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${user.id}</td>
+        <td>${user.email}</td>
+        <td>${user.role}</td>
+        <td>
+          <button onclick="deleteUser(${user.id})">Deletar</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function deleteUser(userId) {
+    if (!confirm('Tem certeza que deseja deletar este usuário?')) return;
+    const res = await fetch(`/admin/users/${userId}`, { method: 'DELETE' });
+    if (res.ok) {
+      fetchUsers();
+      fetchProjects();
+    } else {
+      alert('Erro ao deletar usuário.');
+    }
+  }
+
+  async function fetchProjects() {
+    const res = await fetch('/admin/projects');
+    if (!res.ok) return;
+    const projects = await res.json();
+    const tbody = document.querySelector('#projects-table tbody');
+    tbody.innerHTML = '';
+    projects.forEach(project => {
+      const usersList = project.users && project.users.length
+        ? project.users.map(u => `${u.email} (${u.role})`).join(', ')
+        : 'Nenhum usuário';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${project.id}</td>
+        <td>${project.name}</td>
+        <td>${usersList}</td>
+        <td>
+          <button onclick="deleteProject(${project.id})">Deletar</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function deleteProject(projectId) {
+    if (!confirm('Tem certeza que deseja deletar este projeto?')) return;
+    const res = await fetch(`/admin/projects/${projectId}`, { method: 'DELETE' });
+    if (res.ok) {
+      fetchProjects();
+    } else {
+      alert('Erro ao deletar projeto.');
+    }
+  }
+
+  fetchUsers();
+  fetchProjects();
+  </script>
 </body>
 </html>

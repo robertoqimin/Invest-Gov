@@ -7,6 +7,10 @@ from flask import Blueprint
 bp = Blueprint('auth', __name__)
 
 #rotas GET
+@bp.route('/registeradmin', methods=['GET'])
+def registeradmin_page():
+    return render_template('adminCadastro.html')
+
 @bp.route('/register', methods=['GET'])
 def register_page():
     return render_template('userCadastro.html')
@@ -36,6 +40,28 @@ def register():
     except Exception as e:
         print(f'Erro no registro: {e}')
         return jsonify({'message': 'Erro ao registrar usuário'}), 500
+    
+
+@bp.route('/registeradmin', methods=['POST'])
+def registeradmin():
+    try:
+        data = request.get_json()
+        if User.query.filter_by(email=data['email']).first():
+            return jsonify({'message': 'Email já registrado'}), 400
+
+        hashed = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+
+        # Use o role que vem do frontend, ou 'user' como padrão
+        role = data.get('role', 'admin')
+
+        user = User(username=data['username'], email=data['email'], password=hashed, role=role)
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({'message': 'Usuário registrado com sucesso'})
+    except Exception as e:
+        print(f'Erro no registro: {e}')
+        return jsonify({'message': 'Erro ao registrar usuário'}), 500
+
 
 @bp.route('/login', methods=['POST'])
 def login():

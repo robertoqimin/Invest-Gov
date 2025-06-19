@@ -1,0 +1,90 @@
+{% include 'partials/head.html' %}
+<body>
+  {% include 'partials/header.html' %}
+
+
+
+
+  <style>
+    body{
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+    }
+    .centered-cadastro-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container-cadastro {
+      background: #222;
+      padding: 2rem 2.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      min-width: 320px;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .container-cadastro input {
+      width: 90%;
+      margin: 0.5rem 0;
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .container-cadastro button {
+            margin: 0.5rem 0.2rem;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+    }
+    .container-cadastro a button {
+      background: #333;
+    }
+  </style>
+  <div class="centered-cadastro-wrapper">
+    <div class="container-cadastro">
+      <h2>Cadastro ADMIN</h2>
+      <form id="registerForm" style="display: flex; flex-direction: column; width: 100%;">
+        <input type="text" name="username" placeholder="Usuário" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Senha" required>
+        <button type="submit">Cadastrar</button>
+      </form>
+      <p id="message" style="color: red; margin-bottom: 10px;"></p>
+      <a href="{{ url_for('auth.login_page') }}"><button type="button">Já tenho conta</button></a>
+    </div>
+  </div>
+ 
+
+  <script>
+    document.getElementById('registerForm').onsubmit = async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+
+    data.role = 'admin';
+    const res = await fetch('/registeradmin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+          window.location.href = '/login';
+      } else {
+          document.getElementById('message').innerText = result.message;
+      }
+    };
+  </script>
+</body>
+</html>

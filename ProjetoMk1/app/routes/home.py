@@ -28,4 +28,4 @@ def admintestes():
 
 @bp.route('/admin')
 def admin():
-    return render_template('adminLogin.html')
+    return render_template('admin.html')
