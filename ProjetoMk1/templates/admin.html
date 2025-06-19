@@ -13,51 +13,8 @@
 </head>
 <body>
   <h1>Painel Admin</h1>
-
-  <section>
-    <h2>Relatórios</h2>
-    <table id="reports-table">
-      <thead>
-        <tr><th>ID</th><th>Motivo</th><th>Status</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
-
-  <section>
-    <h2>Usuários</h2>
-    <table id="users-table">
-      <thead>
-        <tr><th>ID</th><th>Email</th><th>Função</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
-
-<script>
-  async function fetchData(url, tableId) {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Erro: ' + response.status);
-      const data = await response.json();
-      const tbody = document.querySelector(`#${tableId} tbody`);
-      tbody.innerHTML = '';
-      data.forEach(item => {
-        const row = document.createElement('tr');
-        Object.values(item).forEach(val => {
-          const cell = document.createElement('td');
-          cell.textContent = val;
-          row.appendChild(cell);
-        });
-        tbody.appendChild(row);
-      });
-    } catch (error) {
-      alert('Falha ao carregar dados: ' + error.message);
-    }
-  }
-
-  fetchData('/admin/reports', 'reports-table');
-  fetchData('/admin/users', 'users-table');
-</script>
+  <a href="/admin/login"><button>LOGIN</button></a>
+  <a href="/admin/cadastrar"><button>CADASTRAR NOVO ADMIN</button></a>
+  
 </body>
 </html>

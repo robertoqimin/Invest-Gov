@@ -79,7 +79,7 @@
       const result = await res.json();
 
       if (res.ok) {
-          window.location.href = '/';
+          window.location.href = '/login';
       } else {
           document.getElementById('message').innerText = result.message;
       }

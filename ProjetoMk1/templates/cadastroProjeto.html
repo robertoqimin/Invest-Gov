@@ -140,6 +140,9 @@
       if (resp.ok) {
         alert('Projeto cadastrado com sucesso!');
         document.getElementById('cadastro-form').reset();
+        if (result.id) {
+          window.location.href = `/projects/${result.id}`;
+        }
       } else {
         alert(result.error || 'Erro ao cadastrar projeto');
       }

@@ -41,7 +41,9 @@ header {
 
 .carrossel {
   display: flex;
-  gap: 1rem;
+  
+  gap: .5rem;
+  flex-wrap: wrap;
   overflow-x: auto;
   padding: 1rem;
   scroll-snap-type: x mandatory;
