@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lobby de Investimentos</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% include 'partials/head.html'%}
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -119,7 +113,6 @@
       margin-top: 40px;
     }
   </style>
-</head>
 <body>
 
   {% include 'partials/header.html' %}

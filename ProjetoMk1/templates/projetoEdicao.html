@@ -1,7 +1,4 @@
 {%include 'partials/head.html' %}
-<body>
-    {% include 'partials/header.html' %}    
-
 
     <style>
         body {
@@ -91,7 +88,11 @@
         .edit-project-container a:hover {
           background: #555;
         }
+
     </style>
+
+<body>
+    {% include 'partials/header.html' %}
     <div class="edit-project-container">
         <h1>Editar Projeto</h1>
         <form method="POST">
@@ -106,7 +107,7 @@
 
             <label for="description">Descrição:</label>
             <textarea id="description" name="description" rows="5" required>{{ projeto.description }}</textarea>
-            
+
             <div style="display: flex; gap: 12px;">
                 <button type="submit" style="flex: 1;">Salvar Alterações</button>
                 <a href="{{ url_for('projects.view_project', id=projeto.id) }}" style="flex: 1; text-align: center;">Cancelar</a>
