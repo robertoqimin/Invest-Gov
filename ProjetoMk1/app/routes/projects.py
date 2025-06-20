@@ -65,3 +65,19 @@ def delete_project_post(id):
     db.session.delete(p)
     db.session.commit()
     return redirect(url_for('home_blueprint.perfil'))
+
+@bp.route('/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_project_form(id):
+    projeto = Project.query.get_or_404(id)
+    if projeto.owner_id != current_user.id:
+        return jsonify({'error': 'Sem permissão'}), 403
+    if request.method == 'POST':
+        data = request.form
+        projeto.title = data.get('title', projeto.title)
+        projeto.description = data.get('description', projeto.description)
+        projeto.category = data.get('category', projeto.category)
+        projeto.location = data.get('location', projeto.location)
+        db.session.commit()
+        return redirect(url_for('projects.view_project', id=projeto.id))
+    return render_template('projetoEdicao.html', projeto=projeto)

@@ -9,7 +9,7 @@ def index():
 
 @bp.route('/cadastrarprojeto')
 def cadastrarprojeto():
-    return render_template('cadastroProjeto.html')
+    return render_template('projetoCadastro.html')
 
 @bp.route('/perfil')
 def perfil():

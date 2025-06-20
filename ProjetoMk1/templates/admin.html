@@ -1,6 +1,33 @@
 {% include 'partials/head.html' %}
 <body>
   {% include 'partials/header.html' %}
+  <style>
+    #users-table, #projects-table {
+      width: 80%;
+      margin: 24px auto 0 auto;
+      background: #222;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.09);
+      color: #fff;
+    }
+    #users-table thead tr, #projects-table thead tr {
+      background: #333;
+    }
+    #users-table th, #users-table td,
+    #projects-table th, #projects-table td {
+      padding: 12px 8px;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 40px;
+    }
+    h2 {
+      text-align: center;
+      color: #fff;
+      margin-top: 40px;
+    }
+  </style>
+
   <h1>Painel Admin</h1>
 
   <h2>Usuários</h2>
@@ -23,8 +50,8 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Nome</th>
-        <th>Usuários</th>
+        <th>Nome do Projeto</th>
+        <th>Criador do Projeto</th>
         <th>Ações</th>
       </tr>
     </thead>
@@ -46,8 +73,9 @@
         <td>${user.id}</td>
         <td>${user.email}</td>
         <td>${user.role}</td>
+        
         <td>
-          <button onclick="deleteUser(${user.id})">Deletar</button>
+            <button onclick="deleteUser(${user.id})" style="background:#333;color:#fff;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;transition:background 0.2s;align-items: center;">Deletar</button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -81,7 +109,7 @@
         <td>${project.name}</td>
         <td>${usersList}</td>
         <td>
-          <button onclick="deleteProject(${project.id})">Deletar</button>
+          <button onclick="deleteProject(${project.id})" style="background:#333;color:#fff;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;transition:background 0.2s;align-items: center;">Deletar</button>
         </td>
       `;
       tbody.appendChild(tr);

@@ -113,6 +113,11 @@
     .favorites-list li a:hover {
       text-decoration: underline;
     }
+    h2 {
+      text-align: center;
+      color: #fff;
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
@@ -133,7 +138,7 @@
         {% endfor %}
       </ul>
     {% else %}
-      <p>Você ainda não favoritou nenhum projeto.</p>
+      <p style="text-align: center;">Você ainda não favoritou nenhum projeto.</p>
     {% endif %}
   </section>
   {% else %}

@@ -30,7 +30,6 @@ def register():
 
         hashed = bcrypt.generate_password_hash(data['password']).decode('utf-8')
 
-        # Use o role que vem do frontend, ou 'user' como padrão
         role = data.get('role', 'user')
 
         user = User(username=data['username'], email=data['email'], password=hashed, role=role)
@@ -51,7 +50,6 @@ def registeradmin():
 
         hashed = bcrypt.generate_password_hash(data['password']).decode('utf-8')
 
-        # Use o role que vem do frontend, ou 'user' como padrão
         role = data.get('role', 'admin')
 
         user = User(username=data['username'], email=data['email'], password=hashed, role=role)

@@ -1,0 +1,152 @@
+{%include 'partials/head.html' %}
+<body>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #000;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+    h2 {
+      text-align: center;
+      color: #fff;
+      margin-top: 40px;
+    }
+    form#cadastro-form {
+      background: #333;
+      max-width: 80%;
+      width: 80%;
+      margin: 40px auto 0 auto;
+      padding: 32px 28px 24px 28px;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(44,62,80,0.09);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+  
+    .form-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .form-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .descricao-col {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    form#cadastro-form label {
+      font-weight: 500;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    form#cadastro-form input[type="text"],
+    form#cadastro-form textarea {
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-size: 1rem;
+      background: #222;
+      color: #fff;
+      transition: border 0.2s;
+      outline: none;
+    }
+    form#cadastro-form input[type="text"]:focus,
+    form#cadastro-form textarea:focus {
+      border-color: #2563eb;
+      background: #111;
+      color: #fff;
+    }
+    form#cadastro-form textarea {
+      resize: vertical;
+      min-height: 180px;
+      max-height: 320px;
+      font-size: 1.3rem;
+      line-height: 1.5;
+    }
+    form#cadastro-form button[type="submit"] {
+      background: #444;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    form#cadastro-form button[type="submit"]:hover {
+      background: #444;
+    }
+    p {
+      text-align: center;
+      margin-top: 60px;
+      color: #b91c1c;
+      font-size: 1.1rem;
+    }
+  </style>
+
+
+  {% include 'partials/header.html' %}
+
+  {% if current_user.is_authenticated %}
+  <form id="cadastro-form">
+    <h2>Cadastrar Novo Projeto</h2>
+    <label>Nome do Projeto:</label>
+    <input type="text" id="empresa" name="empresa" required />
+
+    <label>Categoria do projeto:</label>
+    <input type="text" id="produto" name="produto" required />
+
+    <label>Imagem (URL direta da imagem):</label>
+    <input type="text" id="imagem" name="imagem" required />
+
+    <label>Descrição do Projeto:</label>
+    <textarea id="descricao" name="descricao" rows="4" required></textarea>
+
+    <button type="submit">Cadastrar</button>
+  </form>  
+  {% else %}
+    <p>Você precisa estar logado para cadastrar um projeto.</p>
+  {% endif %}
+
+  <script>
+    document.getElementById('cadastro-form')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = {
+        title: document.getElementById('empresa').value,
+        description: document.getElementById('descricao').value,
+        category: document.getElementById('produto').value,
+        location: document.getElementById('imagem').value
+      };
+      const resp = await fetch('/projects/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      const result = await resp.json();
+      if (resp.ok) {
+        alert('Projeto cadastrado com sucesso!');
+        document.getElementById('cadastro-form').reset();
+        if (result.id) {
+          window.location.href = `/projects/${result.id}`;
+        }
+      } else {
+        alert(result.error || 'Erro ao cadastrar projeto');
+      }
+    });
+  </script>
+</body>
+</html>

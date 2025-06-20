@@ -65,7 +65,7 @@
 
   <!-- Todos os Projetos -->
   <section class="categoria">
-    <h2 class="title">Todos os Projetos</h2>
+    <h2 class="title" style="text-align: center;">Todos os Projetos</h2>
     <div class="carrossel">
       {% for projeto in projetos %}
         <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
@@ -81,6 +81,6 @@
   </section>
 
 
-  <script src="{{ url_for('static', filename='carrossel.js') }}"></script>
+
 </body>
 </html>
