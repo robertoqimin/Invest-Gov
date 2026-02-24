@@ -1,0 +1,110 @@
+{%include 'partials/head.html' %}
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #000;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+    .perfil-container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #333;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(44,62,80,0.09);
+      padding: 32px 40px;
+    }
+    h1, h2 {
+      color: #fff;
+      margin-top: 0;
+      text-align: center;
+    }
+    p {
+      color: #fff;
+      font-size: 1.1em;
+      text-align: center;
+      margin-top: 24px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #222;
+      margin-bottom: 12px;
+      padding: 14px 18px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    li:last-child {
+      margin-bottom: 0;
+    }
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      margin-right: 16px;
+      transition: color 0.2s;
+    }
+    a:hover {
+      text-decoration: underline;
+      color: #2563eb;
+    }
+    form {
+      display: inline;
+      margin: 0;
+    }
+    button {
+      background: #444;
+      color: #fff;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95em;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #b91c1c;
+    }
+  </style>
+<body>
+  {% include 'partials/header.html' %}
+
+  <div class="perfil-container">
+    <h1>Perfil do Usuário</h1>
+    <p>Nome: {{ current_user.username }}</p>
+    <p>Email: {{ current_user.email }}</p>
+
+    <h2>Projetos Criados</h2>
+    <ul>
+      {% if current_user.projetos %}
+        {% for projeto in current_user.projetos %}
+          <li>
+            <span>
+              <a href="{{ url_for('projects.edit_project', id=projeto.id) }}">{{ projeto.title }}</a>
+            </span>
+
+            </a>
+            <div style="display: flex; gap: 10px;">
+              <a href="{{ url_for('projects.edit_project', id=projeto.id) }}/edit" style="flex:1;">
+              <button type="button" style="width:100%;">Editar</button>
+              </a>
+              <form action="{{ url_for('projects.delete_project_post', id=projeto.id) }}" method="post" style="display:inline; flex:1;">
+              <button type="submit" style="width:100%;" onclick="return confirm('Tem certeza que deseja deletar este projeto?')">Deletar</button>
+              </form>
+            </div>
+          </li>
+        {% endfor %}
+      {% else %}
+        <li>Nenhum projeto cadastrado.</li>
+      {% endif %}
+    </ul>
+  </div>
+</body>
+</html>

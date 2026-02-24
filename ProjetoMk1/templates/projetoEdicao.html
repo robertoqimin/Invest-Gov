@@ -1,0 +1,118 @@
+{%include 'partials/head.html' %}
+
+    <style>
+        body {
+          font-family: 'Segoe UI', Arial, sans-serif;
+          background: #000;
+          margin: 0;
+          padding: 0;
+          color: #fff;
+        }
+        h1 {
+          text-align: center;
+          color: #fff;
+          margin-top: 40px;
+        }
+        .edit-project-container {
+          background: #333;
+          max-width: 80%;
+          width: 80%;
+          margin: 40px auto 0 auto;
+          padding: 32px 28px 24px 28px;
+          border-radius: 12px;
+          box-shadow: 0 4px 24px rgba(44,62,80,0.09);
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .edit-project-container label {
+          font-weight: 500;
+          color: #fff;
+          margin-bottom: 4px;
+        }
+        .edit-project-container input[type="text"],
+        .edit-project-container textarea {
+          border: 1px solid #d1d5db;
+          border-radius: 6px;
+          padding: 10px 12px;
+          font-size: 1rem;
+          background: #222;
+          color: #fff;
+          transition: border 0.2s;
+          outline: none;
+          width: 100%;
+          box-sizing: border-box;
+          margin-bottom: 16px;
+        }
+        .edit-project-container input[type="text"]:focus,
+        .edit-project-container textarea:focus {
+          border-color: #2563eb;
+          background: #111;
+          color: #fff;
+        }
+        .edit-project-container textarea {
+          resize: vertical;
+          min-height: 180px;
+          max-height: 320px;
+          font-size: 1.3rem;
+          line-height: 1.5;
+        }
+        .edit-project-container button[type="submit"] {
+          background: #444;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          padding: 12px 0;
+          font-size: 1.1rem;
+          font-weight: 600;
+          cursor: pointer;
+          margin-top: 8px;
+          transition: background 0.2s;
+          width: 100%;
+        }
+        .edit-project-container button[type="submit"]:hover {
+          background: #2563eb;
+        }
+        .edit-project-container a {
+          display: inline-block;
+          background: #333;
+          color: #eee;
+          border-radius: 6px;
+          padding: 12px 22px;
+          font-size: 1rem;
+          text-decoration: none;
+          margin-top: 10px;
+          margin-right: 10px;
+          transition: background 0.2s;
+        }
+        .edit-project-container a:hover {
+          background: #555;
+        }
+
+    </style>
+
+<body>
+    {% include 'partials/header.html' %}
+    <div class="edit-project-container">
+        <h1>Editar Projeto</h1>
+        <form method="POST">
+            <label for="title">Nome do Projeto:</label>
+            <input type="text" id="title" name="title" value="{{ projeto.title }}" required>
+
+            <label for="category">Categoria:</label>
+            <input type="text" id="category" name="category" value="{{ projeto.category }}">
+
+            <label for="location">Imagem:</label>
+            <input type="text" id="location" name="location" value="{{ projeto.location }}">
+
+            <label for="description">Descrição:</label>
+            <textarea id="description" name="description" rows="5" required>{{ projeto.description }}</textarea>
+
+            <div style="display: flex; gap: 12px;">
+                <button type="submit" style="flex: 1;">Salvar Alterações</button>
+                <a href="{{ url_for('projects.view_project', id=projeto.id) }}" style="flex: 1; text-align: center;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

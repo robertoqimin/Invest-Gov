@@ -1,0 +1,270 @@
+{% include 'partials/head.html' %}
+
+  <style>
+    .project-card {
+      max-width: 80%;
+      width: 80%;
+      margin: 20px auto;
+      background: #333;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 32px;
+      color: #fff;
+    }
+    .project-card .owner-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .project-card .owner-avatar {
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+    }
+    .project-card .owner-details p {
+      margin: 0;
+      color: #fff;
+    }
+    .project-card .owner-details .email {
+      font-size: 0.95em;
+      color: #bdbdbd;
+    }
+    .project-card h2 {
+      margin-top: 0;
+      color: #0d8abc;
+    }
+    .project-image {
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 18px;
+    }
+    .description {
+      font-size: 1.1em;
+      color: #fff;
+      white-space: pre-line;
+      word-break: break-word;
+    }
+    .project-card .category {
+      margin-bottom: 24px;
+      background: #e3f2fd;
+      color: #1976d2;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 0.98em;
+    }
+    .favorite-btn {
+      background: #fff;
+      color: #1976d2;
+      border: 1px solid #1976d2;
+      border-radius: 20px;
+      padding: 8px 24px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      margin-bottom: 8px;
+    }
+    .favorite-btn:hover {
+      background: #1976d2;
+      color: #fff;
+    }
+    .favorite-message {
+      margin-bottom: 12px;
+    }
+    #comments-section {
+      margin-top: 40px;
+      color: #fff;
+    }
+    #comments-section h3 {
+      color: #1976d2;
+      margin-bottom: 18px;
+    }
+    #comments-list {
+      background: #222;
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 60px;
+      word-break: break-word;
+      white-space: pre-line;
+      color: #fff;
+    }
+    #comment-form {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: #fff;
+    }
+    #comment-content {
+      resize: vertical;
+      border-radius: 8px;
+      border: 1px solid #bdbdbd;
+      padding: 10px;
+      font-size: 1em;
+      background: #333;
+      color: #fff;
+    }
+    #comment-form button[type="submit"] {
+      align-self: flex-end;
+      background: #444;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 24px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #comment-form button[type="submit"]:hover {
+      background: #1976d2;
+    }
+    #comment-message {
+      color: green;
+      margin-top: 8px;
+    }
+    .login-message {
+      color: #bdbdbd;
+      margin-top: 12px;
+    }
+  </style>
+
+<body>
+  {% include 'partials/header.html' %}
+
+  <main class="project-card">
+    <div class="owner-info">
+      <img src="https://ui-avatars.com/api/?name={{ projeto.owner.username }}&background=0D8ABC&color=fff&size=48" alt="Avatar" class="owner-avatar">
+      <div class="owner-details">
+        <p><strong>{{ projeto.owner.username }}</strong></p>
+        <p class="email">{{ projeto.owner.email }}</p>
+      </div>
+    </div>
+
+    <h2>{{ projeto.title }}</h2>
+    <img src="{{ projeto.location }}" alt="{{ projeto.title }}" class="project-image">
+    <p class="description">{{ projeto.description }}</p>
+
+    {% if current_user.is_authenticated %}
+      <button id="favorite-btn" class="favorite-btn">&#9733; Favoritar</button>
+      <p id="message" class="favorite-message"></p>
+    {% else %}
+      <p class="login-message">Faça login para favoritar este projeto.</p>
+    {% endif %}
+
+    <!-- Seção de comentários visível para todos -->
+    <section id="comments-section">
+      <h3>Comentários</h3>
+
+      <div id="comments-list"></div>
+        <!-- Comentários carregados aqui -->
+      </div>
+
+      {% if current_user.is_authenticated %}
+        <form id="comment-form">
+          <textarea id="comment-content" rows="3" placeholder="Escreva seu comentário..." required></textarea>
+          <button type="submit">Comentar</button>
+        </form>
+        <p id="comment-message"></p>
+      {% else %}
+        <p class="login-message">Faça login para comentar.</p>
+      {% endif %}
+    </section>
+  </main>
+
+  {% if current_user.is_authenticated %}
+  <script>
+    // Favoritar projeto
+    document.getElementById('favorite-btn').addEventListener('click', () => {
+      fetch(`/favorites/{{ projeto.id }}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Erro na requisição');
+        return response.json();
+      })
+      .then(data => {
+        document.getElementById('message').innerText = data.message || 'Projeto favoritado!';
+      })
+      .catch(err => {
+        document.getElementById('message').style.color = 'red';
+        document.getElementById('message').innerText = 'Erro ao favoritar.';
+        console.error(err);
+      });
+    });
+  </script>
+  {% endif %}
+
+  <script>
+    const commentsList = document.getElementById('comments-list');
+    const commentMessage = document.getElementById('comment-message');
+
+    async function loadComments() {
+      try {
+        const res = await fetch(`/comments/{{ projeto.id }}`);
+        if (!res.ok) throw new Error('Erro ao carregar comentários');
+        const comments = await res.json();
+
+        commentsList.innerHTML = '';
+        if (comments.length === 0) {
+          commentsList.innerHTML = '<p style="color:#888;">Nenhum comentário ainda.</p>';
+          return;
+        }
+
+        comments.forEach(c => {
+          const div = document.createElement('div');
+          div.style.padding = '10px 0';
+          div.style.borderBottom = '1px solid #e0e0e0';
+          div.innerHTML = `
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(c.username)}&background=1976d2&color=fff&size=32" alt="Avatar" style="border-radius:50%; width:32px; height:32px;">
+              <strong style="color:#1976d2;">${c.username}</strong>
+              <span style="font-size:0.92em; color:#888; margin-left:auto;">${c.created_at}</span>
+            </div>
+            <div style="margin-left:42px; color:#fff; margin-top:2px;">${c.content}</div>
+          `;
+          commentsList.appendChild(div);
+        });
+      } catch (err) {
+        commentsList.innerHTML = '<p style="color:red;">Erro ao carregar comentários.</p>';
+        console.error(err);
+      }
+    }
+
+    const commentForm = document.getElementById('comment-form');
+    if (commentForm) {
+      commentForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const content = document.getElementById('comment-content').value.trim();
+        if (!content) return;
+
+        try {
+          const response = await fetch(`/comments/{{ projeto.id }}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content })
+          });
+
+          if (!response.ok) throw new Error('Erro ao enviar comentário');
+          const data = await response.json();
+          commentMessage.style.color = 'green';
+          commentMessage.innerText = data.message || 'Comentado com sucesso!';
+          document.getElementById('comment-content').value = '';
+          await loadComments();
+        } catch (err) {
+          commentMessage.style.color = 'red';
+          commentMessage.innerText = 'Erro ao enviar comentário.';
+          console.error(err);
+        }
+      });
+    }
+
+    // Carrega os comentários ao abrir a página
+    loadComments();
+  </script>
+</body>
+</html>

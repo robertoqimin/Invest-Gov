@@ -1,19 +1,31 @@
 from flask import Blueprint, render_template
-
+from app.models.project import Project
 bp = Blueprint('home_blueprint', __name__)
 
 @bp.route('/')
 def index():
-    return render_template('index.html')
+    projetos = Project.query.all()
+    return render_template('index.html', projetos=projetos)
 
-@bp.route('/cadastro')
-def cadastro():
-    return render_template('cadastro.html')
+@bp.route('/cadastrarprojeto')
+def cadastrarprojeto():
+    return render_template('projetoCadastro.html')
 
-@bp.route('/detalhe')
-def detalhe():
-    return render_template('detalhe.html')
+@bp.route('/perfil')
+def perfil():
+    return render_template('perfil.html')
+@bp.route('/sobrenos')
+def sobrenos():
+    return render_template('sobreNos.html')
 
-@bp.route('/detalhes')
-def detalhes():
-    return render_template('detalhes.html')
+@bp.route('/favoritos')
+def favoritos():
+    return render_template('favoritos.html')
+
+@bp.route('/admintestes')
+def admintestes():
+    return render_template('admin.html')
+
+@bp.route('/admin')
+def admin():
+    return render_template('admin.html')

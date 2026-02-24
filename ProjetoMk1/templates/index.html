@@ -1,44 +1,84 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lobby de Investimentos</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% include 'partials/head.html' %}
+
+  <style>
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      cursor: pointer;
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      min-width: 150px;
+      z-index: 1;
+      flex-direction: column;
+    }
+
+    .dropdown-content a,
+    .dropdown-content form {
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+      display: block;
+      border: none;
+      background: none;
+      text-align: left;
+    }
+
+    .dropdown-content a:hover,
+    .dropdown-content form:hover {
+      background-color: #444;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content form button {
+      color: white;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .dropdown-content form button:hover {
+      background-color: #444;
+    }
+  </style>
+
 <body>
-  <header>
-    <nav class="navbar">
-      <a href="{{ url_for('home_blueprint.index') }}">Home</a>
-      <a href="#">Login</a>
-      <a href="#">Sobre Nós</a>
-      <a href="{{ url_for('home_blueprint.cadastro') }}">Cadastrar</a>
-    </nav>
-    <h1>Lobby de Investimentos</h1>
-  </header>
 
+  {% include 'partials/header.html' %}
+
+  <!-- Todos os Projetos -->
   <section class="categoria">
-    <h2>Tecnologia</h2>
-    <div class="carrossel" id="carrossel-tecnologia"></div>
+    <h2 class="title" style="text-align: center;">Todos os Projetos</h2>
+    <div class="carrossel">
+      {% for projeto in projetos %}
+        <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
+          <div class="projeto">
+            <img src="{{ projeto.location }}" alt="Imagem do projeto">
+            <h3>{{ projeto.title }}</h3>
+            <p>{{ projeto.description }}</p>
+            <p><strong>Categoria:</strong> {{ projeto.category }}</p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
   </section>
 
-  <section class="categoria">
-    <h2>Energia</h2>
-    <div class="carrossel" id="carrossel-energia"></div>
-  </section>
 
-  <section class="categoria">
-    <h2>Saúde</h2>
-    <div class="carrossel" id="carrossel-saude"></div>
-  </section>
 
-  <main>
-    <div id="carrossel" class="carrossel-container"></div>
-  </main>
-
-  <script src="{{ url_for('static', filename='carrossel.js') }}"></script>
-  <script src="{{ url_for('static', filename='animacaodocarrossel.js') }}"></script>
-  <script src="{{ url_for('static', filename='intescarrossel.js') }}"></script>
-  <script src="{{ url_for('static', filename='script01.js') }}"></script>
 </body>
 </html>

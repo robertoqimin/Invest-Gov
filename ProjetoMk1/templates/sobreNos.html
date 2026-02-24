@@ -1,0 +1,53 @@
+{% include 'partials/head.html' %}
+
+  <style>
+  .sobre-nos {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #333;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .sobre-nos h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .sobre-nos p {
+    font-size: 1.15rem;
+    color: #fff;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    text-align: justify;
+  }
+  @media (max-width: 600px) {
+    .sobre-nos {
+      padding: 16px;
+    }
+    .sobre-nos h1 {
+      font-size: 2rem;
+    }
+  }
+  </style>
+<body>
+  {% include 'partials/header.html' %}
+  
+  <section class="sobre-nos">
+    <h1>Sobre Nós</h1>
+    <p>
+      Bem-vindo ao Lobby de Investimentos! Somos uma equipe dedicada a conectar investidores e oportunidades de negócios, promovendo o crescimento econômico e a inovação. Nosso objetivo é facilitar o acesso a informações relevantes, criar redes de contato e apoiar o desenvolvimento sustentável de projetos em diversos setores.
+    </p>
+    <p>
+      Com uma abordagem transparente e ética, buscamos oferecer um ambiente seguro e confiável para todos os nossos usuários. Valorizamos a colaboração, o profissionalismo e o compromisso com resultados positivos para investidores e empreendedores.
+    </p>
+    <p>
+      Junte-se a nós nessa jornada e faça parte de uma comunidade que acredita no potencial transformador dos investimentos!
+    </p>
+  </section>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-const carrossel = document.getElementById("carrossel");
+/*const carrossel = document.getElementById("carrossel");
 
 let isDown = false;
 let startX;
@@ -47,3 +47,4 @@ carrossel.addEventListener("wheel", function(evt) {
   evt.preventDefault();
   this.scrollLeft += evt.deltaY;
 }, { passive: false });
+*/

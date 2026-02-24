@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Usuário</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  {% include 'partials/header.html' %}
+
+  <h2>Cadastro</h2>
+  <form id="registerForm">
+    <input type="text" name="username" placeholder="Usuário" required><br>
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="password" name="password" placeholder="Senha" required><br>
+
+    <label for="role">Role:</label>
+    <select name="role" id="role">
+      <option value="user" selected>Usuário</option>
+      <option value="admin">Admin</option>
+    </select><br><br>
+
+    <button type="submit">Cadastrar</button>
+  </form>
+  <p id="message" style="color: red;"></p>
+  <a href="{{ url_for('auth.login_page') }}"><button>Login</button></a>
+
+  <script>
+    document.getElementById('registerForm').onsubmit = async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+
+      const res = await fetch('/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+          window.location.href = '/';
+      } else {
+          document.getElementById('message').innerText = result.message;
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+{% include 'partials/head.html'%}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #000; /* fundo preto */
+      color: #eee;       /* letras claras */
+    }
+
+    header {
+      text-align: center;
+      padding: 1rem;
+      background-color: #222;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      background-color: #333;
+      padding: 0.5rem;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      cursor: pointer;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      min-width: 150px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+      z-index: 1;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .dropdown-content a,
+    .dropdown-content form button {
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+      display: block;
+      background: none;
+      border: none;
+      text-align: left;
+      width: 100%;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .dropdown-content a:hover,
+    .dropdown-content form button:hover {
+      background-color: #444;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Estilo da lista de favoritos */
+    .favorites-list {
+      margin: 20px auto;
+      padding: 0;
+      max-width: 600px;
+      list-style: none;
+    }
+
+    .favorites-list li {
+      background-color: #1a1a1a;
+      margin-bottom: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .favorites-list li:hover {
+      background-color: #333;
+    }
+
+    .favorites-list li a {
+      color: #eee;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .favorites-list li a:hover {
+      text-decoration: underline;
+    }
+    h2 {
+      text-align: center;
+      color: #fff;
+      margin-top: 40px;
+    }
+  </style>
+<body>
+
+  {% include 'partials/header.html' %}
+
+  {% if current_user.is_authenticated %}
+  <section>
+    <h2>Seus Favoritos</h2>
+    {% if current_user.favorites %}
+      <ul class="favorites-list">
+        {% for projeto in current_user.favorites %}
+          <li>
+            <a href="{{ url_for('projects.view_project', id=projeto.id) }}">
+              {{ projeto.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p style="text-align: center;">Você ainda não favoritou nenhum projeto.</p>
+    {% endif %}
+  </section>
+  {% else %}
+    <p>Faça login para ver seus favoritos.</p>
+  {% endif %}
+
+</body>
+</html>
