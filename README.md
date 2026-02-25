@@ -1,7 +1,7 @@
 # Invest-Gov
 Aplicação web full stack voltada ao apoio e incentivo a pequenos empreendedores, conectando projetos a oportunidades de investimento com gestão centralizada.
 
-🚀 Tecnologias Utilizadas
+# 🚀 Tecnologias Utilizadas
 
 Python (Flask) – Backend, rotas e regras de negócio
 
@@ -11,7 +11,7 @@ SQLite – Banco de dados relacional
 
 GitHub – Versionamento e repositório do projeto
 
-🔐 Funcionalidades Implementadas
+# 🔐 Funcionalidades Implementadas
 
 Cadastro e autenticação de usuários
 
