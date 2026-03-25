@@ -1,132 +1,54 @@
 {% include 'partials/head.html' %}
 <body>
-  <style>
-    #users-table, #projects-table {
-      width: 80%;
-      margin: 24px auto 0 auto;
-      background: #222;
-      border-radius: 10px;
-      box-shadow: 0 2px 12px rgba(44,62,80,0.09);
-      color: #fff;
-    }
-    #users-table thead tr, #projects-table thead tr {
-      background: #333;
-    }
-    #users-table th, #users-table td,
-    #projects-table th, #projects-table td {
-      padding: 12px 8px;
-    }
-    h1 {
-      text-align: center;
-      margin-top: 40px;
-    }
-    h2 {
-      text-align: center;
-      color: #fff;
-      margin-top: 40px;
-    }
-  </style>
   {% include 'partials/header.html' %}
-  <h1>Painel Admin</h1>
+  <main class="page-shell admin-grid">
+    <section class="hero surface">
+      <span class="hero-kicker">Gestão da plataforma</span>
+      <h1 class="page-title">Painel administrativo</h1>
+      <p class="page-copy">Acompanhe usuários e projetos em uma interface mais limpa, com tabelas amplas e ações destacadas.</p>
+    </section>
 
-  <h2>Usuários</h2>
-  <table id="users-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Usuários serão inseridos aqui via JS -->
-    </tbody>
-  </table>
+    <section class="table-card">
+      <div class="item-row">
+        <div>
+          <h2>Usuários</h2>
+          <p class="muted-text">Monitore acessos e remova contas quando necessário.</p>
+        </div>
+      </div>
+      <table id="users-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
 
-  <h2>Projetos</h2>
-  <table id="projects-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nome do Projeto</th>
-        <th>Criador do Projeto</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Projetos serão inseridos aqui via JS -->
-    </tbody>
-  </table>
+    <section class="table-card">
+      <div class="item-row">
+        <div>
+          <h2>Projetos</h2>
+          <p class="muted-text">Visualize os responsáveis e gerencie o conteúdo publicado.</p>
+        </div>
+      </div>
+      <table id="projects-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome do Projeto</th>
+            <th>Criador do Projeto</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
 
-  <script>
-  async function fetchUsers() {
-    const res = await fetch('/admin/users');
-    if (!res.ok) return;
-    const users = await res.json();
-    const tbody = document.querySelector('#users-table tbody');
-    tbody.innerHTML = '';
-    users.forEach(user => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${user.id}</td>
-        <td>${user.email}</td>
-        <td>${user.role}</td>
-        
-        <td>
-            <button onclick="deleteUser(${user.id})" style="background:#333;color:#fff;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;transition:background 0.2s;align-items: center;">Deletar</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  async function deleteUser(userId) {
-    if (!confirm('Tem certeza que deseja deletar este usuário?')) return;
-    const res = await fetch(`/admin/users/${userId}`, { method: 'DELETE' });
-    if (res.ok) {
-      fetchUsers();
-      fetchProjects();
-    } else {
-      alert('Erro ao deletar usuário.');
-    }
-  }
-
-  async function fetchProjects() {
-    const res = await fetch('/admin/projects');
-    if (!res.ok) return;
-    const projects = await res.json();
-    const tbody = document.querySelector('#projects-table tbody');
-    tbody.innerHTML = '';
-    projects.forEach(project => {
-      const ownerLabel = project.owner
-        ? `${project.owner.email} (${project.owner.role})`
-        : 'Nenhum usuário';
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${project.id}</td>
-        <td>${project.name}</td>
-        <td>${ownerLabel}</td>
-        <td>
-          <button onclick="deleteProject(${project.id})" style="background:#333;color:#fff;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;transition:background 0.2s;align-items: center;">Deletar</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  async function deleteProject(projectId) {
-    if (!confirm('Tem certeza que deseja deletar este projeto?')) return;
-    const res = await fetch(`/admin/projects/${projectId}`, { method: 'DELETE' });
-    if (res.ok) {
-      fetchProjects();
-    } else {
-      alert('Erro ao deletar projeto.');
-    }
-  }
-
-  fetchUsers();
-  fetchProjects();
-  </script>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 </body>
 </html>

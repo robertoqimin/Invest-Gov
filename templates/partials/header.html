@@ -1,24 +1,41 @@
-  <header>
-    <nav class="navbar">
-      <a href="{{ url_for('home_blueprint.index') }}">Home</a>
-      <a href="{{ url_for('home_blueprint.sobrenos') }}">Sobre Nós</a>
-      {% if current_user.is_authenticated %}
-        <a href="{{ url_for('home_blueprint.cadastrarprojeto') }}">Cadastrar Projeto</a>
-        <div class="dropdown">
-          <a href="#" class="dropbtn">Conta</a>
-          <div class="dropdown-content">
-            <a href="{{ url_for('home_blueprint.perfil') }}">Perfil</a>
-            <a href="{{ url_for('home_blueprint.favoritos') }}">Favoritos</a>
-            {% if current_user.role == 'admin' %}
-              <a href="{{ url_for('home_blueprint.admin') }}">Admin</a>
-            {% endif %}
-            <form action="{{ url_for('auth.logout') }}" method="post">
-              <button type="submit">Logout</button>
-            </form>
+  <header class="topbar">
+    <nav class="navbar surface">
+      <a href="{{ url_for('home_blueprint.index') }}" class="brand">
+        <span class="brand-mark">IG</span>
+        <span class="brand-copy">
+          <strong>Invest Gov</strong>
+          <span>Plataforma para projetos e investidores</span>
+        </span>
+      </a>
+
+      <div class="nav-links">
+        <a href="{{ url_for('home_blueprint.index') }}" class="nav-link">Projetos</a>
+        <a href="{{ url_for('home_blueprint.sobrenos') }}" class="nav-link">Sobre nós</a>
+        {% if current_user.is_authenticated %}
+          <a href="{{ url_for('home_blueprint.cadastrarprojeto') }}" class="nav-link">Novo projeto</a>
+        {% endif %}
+      </div>
+
+      <div class="nav-actions">
+        {% if current_user.is_authenticated %}
+          <div class="dropdown">
+            <a href="#" class="dropbtn">{{ current_user.username }}</a>
+            <div class="dropdown-content">
+              <a href="{{ url_for('home_blueprint.perfil') }}">Perfil</a>
+              <a href="{{ url_for('home_blueprint.favoritos') }}">Favoritos</a>
+              {% if current_user.role == 'admin' %}
+                <a href="{{ url_for('home_blueprint.admin') }}">Painel admin</a>
+                <a href="{{ url_for('auth.registeradmin_page') }}">Novo admin</a>
+              {% endif %}
+              <form action="{{ url_for('auth.logout') }}" method="post">
+                <button type="submit">Sair</button>
+              </form>
+            </div>
           </div>
-        </div>
-      {% else %}
-        <a href="{{ url_for('auth.login_page') }}">Login</a>
-      {% endif %}
+        {% else %}
+          <a href="{{ url_for('auth.register_page') }}" class="nav-link">Criar conta</a>
+          <a href="{{ url_for('auth.login_page') }}" class="button button-secondary">Entrar</a>
+        {% endif %}
+      </div>
     </nav>
   </header>

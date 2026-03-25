@@ -1,41 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login Admin</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% include 'partials/head.html' %}
 <body>
-  <h2>Login Admin</h2>
-  <form id="adminLoginForm">
-    <input type="email" name="email" placeholder="Email" required><br>
-    <input type="password" name="password" placeholder="Senha" required><br>
-    <button type="submit">Entrar</button>
-  </form>
-  <p id="message" style="color: red;"></p>
+  <main class="page-shell auth-layout">
+    <section class="auth-card">
+      <span class="hero-kicker">Admin</span>
+      <h1>Login administrativo</h1>
+      <p class="page-copy">Acesse o painel para gerenciar usuários e projetos.</p>
+      <form
+        id="adminLoginForm"
+        class="stack-form"
+        data-auth-endpoint="/login"
+        data-auth-redirect="/admintestes"
+      >
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="field">
+          <label for="password">Senha</label>
+          <input id="password" type="password" name="password" placeholder="Senha" required>
+        </div>
+        <button type="submit" class="button-full">Entrar</button>
+      </form>
+      <p id="message" class="message"></p>
+    </section>
+  </main>
 
-  <script>
-    document.getElementById('adminLoginForm').onsubmit = async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
-
-      const res = await fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-
-      const result = await res.json();
-
-      if (res.ok && result.role === 'admin') {
-        window.location.href = '/admintestes';
-      } else {
-        document.getElementById('message').innerText = result.message || 'Acesso negado';
-      }
-    };
-  </script>
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 </body>
 </html>
