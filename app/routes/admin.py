@@ -33,11 +33,12 @@ def get_projects():
     return jsonify([
         {
             'id': p.id,
-            'name': getattr(p, 'name', getattr(p, 'title', '')),
-            'users': [
-                {'id': u.id, 'email': u.email, 'role': u.role}
-                for u in p.users
-            ] if hasattr(p, 'users') else []
+            'name': p.title,
+            'owner': {
+                'id': p.owner.id,
+                'email': p.owner.email,
+                'role': p.owner.role
+            } if getattr(p, 'owner', None) else None
         }
         for p in projects
     ])

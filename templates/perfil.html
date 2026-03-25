@@ -87,12 +87,10 @@
         {% for projeto in current_user.projetos %}
           <li>
             <span>
-              <a href="{{ url_for('projects.edit_project', id=projeto.id) }}">{{ projeto.title }}</a>
+              <a href="{{ url_for('projects.view_project', id=projeto.id) }}">{{ projeto.title }}</a>
             </span>
-
-            </a>
             <div style="display: flex; gap: 10px;">
-              <a href="{{ url_for('projects.edit_project', id=projeto.id) }}/edit" style="flex:1;">
+              <a href="{{ url_for('projects.edit_project_form', id=projeto.id) }}" style="flex:1;">
               <button type="button" style="width:100%;">Editar</button>
               </a>
               <form action="{{ url_for('projects.delete_project_post', id=projeto.id) }}" method="post" style="display:inline; flex:1;">

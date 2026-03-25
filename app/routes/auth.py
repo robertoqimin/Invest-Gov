@@ -2,7 +2,6 @@ from flask import Blueprint, request, jsonify, render_template, redirect
 from app.models.user import User
 from app import db, bcrypt
 from flask_login import login_user, logout_user, login_required, current_user
-from flask import Blueprint
 
 bp = Blueprint('auth', __name__)
 
@@ -24,13 +23,17 @@ def login_page():
 @bp.route('/register', methods=['POST'])
 def register():
     try:
-        data = request.get_json()
+        data = request.get_json(silent=True) or {}
+        required_fields = {'username', 'email', 'password'}
+        if not required_fields.issubset(data):
+            return jsonify({'message': 'Dados incompletos'}), 400
+
         if User.query.filter_by(email=data['email']).first():
             return jsonify({'message': 'Email já registrado'}), 400
 
         hashed = bcrypt.generate_password_hash(data['password']).decode('utf-8')
 
-        role = data.get('role', 'user')
+        role = 'user'
 
         user = User(username=data['username'], email=data['email'], password=hashed, role=role)
         db.session.add(user)
@@ -42,15 +45,23 @@ def register():
     
 
 @bp.route('/registeradmin', methods=['POST'])
+@login_required
 def registeradmin():
     try:
-        data = request.get_json()
+        if current_user.role != 'admin':
+            return jsonify({'message': 'Acesso negado'}), 403
+
+        data = request.get_json(silent=True) or {}
+        required_fields = {'username', 'email', 'password'}
+        if not required_fields.issubset(data):
+            return jsonify({'message': 'Dados incompletos'}), 400
+
         if User.query.filter_by(email=data['email']).first():
             return jsonify({'message': 'Email já registrado'}), 400
 
         hashed = bcrypt.generate_password_hash(data['password']).decode('utf-8')
 
-        role = data.get('role', 'admin')
+        role = 'admin'
 
         user = User(username=data['username'], email=data['email'], password=hashed, role=role)
         db.session.add(user)
@@ -88,4 +99,3 @@ def get_profile():
         'email': current_user.email,
         'role': current_user.role
     })
-

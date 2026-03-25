@@ -99,14 +99,14 @@
     const tbody = document.querySelector('#projects-table tbody');
     tbody.innerHTML = '';
     projects.forEach(project => {
-      const usersList = project.users && project.users.length
-        ? project.users.map(u => `${u.email} (${u.role})`).join(', ')
+      const ownerLabel = project.owner
+        ? `${project.owner.email} (${project.owner.role})`
         : 'Nenhum usuário';
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${project.id}</td>
         <td>${project.name}</td>
-        <td>${usersList}</td>
+        <td>${ownerLabel}</td>
         <td>
           <button onclick="deleteProject(${project.id})" style="background:#333;color:#fff;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;transition:background 0.2s;align-items: center;">Deletar</button>
         </td>
