@@ -1,84 +1,72 @@
 {% include 'partials/head.html' %}
-
-  <style>
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dropbtn {
-      cursor: pointer;
-      color: white;
-      padding: 10px;
-      text-decoration: none;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #333;
-      min-width: 150px;
-      z-index: 1;
-      flex-direction: column;
-    }
-
-    .dropdown-content a,
-    .dropdown-content form {
-      color: white;
-      padding: 10px;
-      text-decoration: none;
-      display: block;
-      border: none;
-      background: none;
-      text-align: left;
-    }
-
-    .dropdown-content a:hover,
-    .dropdown-content form:hover {
-      background-color: #444;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .dropdown-content form button {
-      color: white;
-      background: none;
-      border: none;
-      width: 100%;
-      text-align: left;
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .dropdown-content form button:hover {
-      background-color: #444;
-    }
-  </style>
-
 <body>
-
   {% include 'partials/header.html' %}
-
-  <!-- Todos os Projetos -->
-  <section class="categoria">
-    <h2 class="title" style="text-align: center;">Todos os Projetos</h2>
-    <div class="carrossel">
-      {% for projeto in projetos %}
-        <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="projeto-link">
-          <div class="projeto">
-            <img src="{{ projeto.location }}" alt="Imagem do projeto">
-            <h3>{{ projeto.title }}</h3>
-            <p>{{ projeto.description }}</p>
-            <p><strong>Categoria:</strong> {{ projeto.category }}</p>
+  <main class="page-shell">
+    <section class="hero surface">
+      <div class="hero-layout">
+        <div>
+          <span class="hero-kicker">Ecossistema de investimento</span>
+          <h1 class="hero-title">Projetos com visual moderno e foco em descoberta.</h1>
+          <p class="hero-copy">
+            Explore ideias, acompanhe categorias e encontre oportunidades em uma experiência
+            mais limpa, atual e confortável em qualquer tela.
+          </p>
+          <div class="actions-row">
+            {% if current_user.is_authenticated %}
+              <a href="{{ url_for('home_blueprint.cadastrarprojeto') }}" class="button">Publicar projeto</a>
+            {% else %}
+              <a href="{{ url_for('auth.register_page') }}" class="button">Criar conta</a>
+            {% endif %}
+            <a href="{{ url_for('home_blueprint.sobrenos') }}" class="button button-secondary">Conhecer a plataforma</a>
           </div>
-        </a>
-      {% endfor %}
-    </div>
-  </section>
+        </div>
+        <div class="hero-stats">
+          <article class="stat-card">
+            <div class="stat-label">Projetos ativos</div>
+            <div class="stat-value">{{ projetos|length }}</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-label">Categorias</div>
+            <div class="stat-value">{{ projetos|map(attribute='category')|select|list|unique|list|length }}</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-label">Experiência</div>
+            <div class="stat-value">2026</div>
+          </article>
+        </div>
+      </div>
+    </section>
 
+    <section class="section">
+      <h2 class="section-title center">Todos os projetos</h2>
+      <p class="section-copy center">Uma vitrine renovada para navegar por oportunidades com mais clareza.</p>
 
-
+      {% if projetos %}
+        <div class="grid-cards section">
+          {% for projeto in projetos %}
+            <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="project-card link-reset">
+              <img src="{{ projeto.location }}" alt="Imagem do projeto {{ projeto.title }}">
+              <div class="project-body">
+                <div class="chip-row">
+                  {% if projeto.category %}
+                    <span class="chip">{{ projeto.category }}</span>
+                  {% else %}
+                    <span class="chip">Sem categoria</span>
+                  {% endif %}
+                </div>
+                <h3 class="project-title">{{ projeto.title }}</h3>
+                <p class="project-description">{{ projeto.description }}</p>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <section class="surface empty-state section">
+          <h3 class="project-title">Nenhum projeto publicado ainda</h3>
+          <p class="project-description">Quando novos projetos forem cadastrados, eles aparecerão aqui com o novo layout.</p>
+        </section>
+      {% endif %}
+    </section>
+  </main>
 </body>
 </html>

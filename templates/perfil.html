@@ -1,108 +1,50 @@
 {%include 'partials/head.html' %}
-
-  <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #000;
-      margin: 0;
-      padding: 0;
-      color: #fff;
-    }
-    .perfil-container {
-      max-width: 700px;
-      margin: 40px auto;
-      background: #333;
-      border-radius: 12px;
-      box-shadow: 0 4px 24px rgba(44,62,80,0.09);
-      padding: 32px 40px;
-    }
-    h1, h2 {
-      color: #fff;
-      margin-top: 0;
-      text-align: center;
-    }
-    p {
-      color: #fff;
-      font-size: 1.1em;
-      text-align: center;
-      margin-top: 24px;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      background: #222;
-      margin-bottom: 12px;
-      padding: 14px 18px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    li:last-child {
-      margin-bottom: 0;
-    }
-    a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 500;
-      margin-right: 16px;
-      transition: color 0.2s;
-    }
-    a:hover {
-      text-decoration: underline;
-      color: #2563eb;
-    }
-    form {
-      display: inline;
-      margin: 0;
-    }
-    button {
-      background: #444;
-      color: #fff;
-      border: none;
-      padding: 7px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.95em;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: #b91c1c;
-    }
-  </style>
 <body>
   {% include 'partials/header.html' %}
+  <main class="page-shell">
+    <section class="profile-card">
+      <div class="profile-header">
+        <span class="hero-kicker">Seu espaço</span>
+        <h1 class="page-title">Perfil do usuário</h1>
+        <div class="profile-meta">
+          <span><strong>Nome:</strong> {{ current_user.username }}</span>
+          <span><strong>Email:</strong> {{ current_user.email }}</span>
+        </div>
+      </div>
 
-  <div class="perfil-container">
-    <h1>Perfil do Usuário</h1>
-    <p>Nome: {{ current_user.username }}</p>
-    <p>Email: {{ current_user.email }}</p>
+      <div class="item-row">
+        <div>
+          <h2>Projetos criados</h2>
+          <p class="muted-text">Gerencie rapidamente seus conteúdos publicados.</p>
+        </div>
+        <a href="{{ url_for('home_blueprint.cadastrarprojeto') }}" class="button">Novo projeto</a>
+      </div>
 
-    <h2>Projetos Criados</h2>
-    <ul>
-      {% if current_user.projetos %}
-        {% for projeto in current_user.projetos %}
-          <li>
-            <span>
-              <a href="{{ url_for('projects.view_project', id=projeto.id) }}">{{ projeto.title }}</a>
-            </span>
-            <div style="display: flex; gap: 10px;">
-              <a href="{{ url_for('projects.edit_project_form', id=projeto.id) }}" style="flex:1;">
-              <button type="button" style="width:100%;">Editar</button>
-              </a>
-              <form action="{{ url_for('projects.delete_project_post', id=projeto.id) }}" method="post" style="display:inline; flex:1;">
-              <button type="submit" style="width:100%;" onclick="return confirm('Tem certeza que deseja deletar este projeto?')">Deletar</button>
-              </form>
-            </div>
+      <ul class="list-clean">
+        {% if current_user.projetos %}
+          {% for projeto in current_user.projetos %}
+            <li class="item-row">
+              <div>
+                <a href="{{ url_for('projects.view_project', id=projeto.id) }}" class="link-reset">
+                  <h3 class="project-title m-0">{{ projeto.title }}</h3>
+                </a>
+                <p class="muted-text m-0">{{ projeto.category or 'Sem categoria' }}</p>
+              </div>
+              <div class="actions-row">
+                <a href="{{ url_for('projects.edit_project_form', id=projeto.id) }}" class="button button-secondary">Editar</a>
+                <form action="{{ url_for('projects.delete_project_post', id=projeto.id) }}" method="post">
+                  <button type="submit" class="button-danger" onclick="return confirm('Tem certeza que deseja deletar este projeto?')">Deletar</button>
+                </form>
+              </div>
+            </li>
+          {% endfor %}
+        {% else %}
+          <li class="center">
+            <p class="project-description">Nenhum projeto cadastrado.</p>
           </li>
-        {% endfor %}
-      {% else %}
-        <li>Nenhum projeto cadastrado.</li>
-      {% endif %}
-    </ul>
-  </div>
+        {% endif %}
+      </ul>
+    </section>
+  </main>
 </body>
 </html>
