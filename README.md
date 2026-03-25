@@ -234,7 +234,7 @@ export SECRET_KEY="sua_chave"
 
 ## Frontend
 
-O frontend foi reorganizado para manter os assets separados:
+O frontend foi organizado para manter os assets separados:
 
 - CSS global em [static/css/style.css](/home/roberto/Documents/GitHub/Invest-Gov/static/css/style.css)
 - Scripts de autenticação em [static/js/auth.js](/home/roberto/Documents/GitHub/Invest-Gov/static/js/auth.js)
@@ -254,11 +254,3 @@ Os templates compartilham estrutura comum por meio de:
 - Existem dependências listadas em `requirements.txt` que nem sempre estão instaladas no ambiente atual de desenvolvimento
 - O sistema usa renderização de páginas Jinja2 combinada com chamadas `fetch` para algumas ações
 
-## Possíveis Melhorias Futuras
-
-- Adicionar testes automatizados
-- Criar seeds para usuário admin inicial
-- Melhorar validações de formulário no backend
-- Adicionar remoção de favorito
-- Expandir o módulo de chat e notificações
-- Padronizar melhor mensagens de erro e sucesso da API
